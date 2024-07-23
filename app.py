@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
 import openai
 import time
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
-# Set the OpenAI API key from a file
-openai.api_key_path = 'api_key.txt'
+# Set your OpenAI API key from environment variable
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 @app.route('/')
