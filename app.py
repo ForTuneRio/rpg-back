@@ -1,20 +1,15 @@
 from flask import Flask, request, jsonify
 import openai
-import time
 from openai import OpenAIError
 from dotenv import load_dotenv
 import os
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources="*")
 
-# Enable CORS for all routes
-CORS(app)
-
-# Load the environment variables from .env
 load_dotenv()
 
-# Get the OpenAI API key from environment variables
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 @app.route('/ask', methods=['GET'])
@@ -24,7 +19,6 @@ def ask_gpt():
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
     try:
-        # Correct API call for chat-based model (gpt-3.5-turbo)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
