@@ -12,19 +12,20 @@ load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-@app.route('/ask', methods=['GET'])
+@app.route('/ask', methods=['POST'])
 def ask_gpt():
-    prompt = request.args.get('prompt', '')
+    data = request.get_json()
 
-    if not prompt:
-        return jsonify({'error': 'No prompt provided'}), 400
+    # Retrieve conversation messages from the request
+    messages = data.get('messages', [])
+
+    if not messages:
+        return jsonify({'error': 'No messages provided'}), 400
+
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ],
+            messages=messages,  # Send the entire conversation history
             max_tokens=150,
             temperature=0.7
         )
