@@ -49,7 +49,7 @@ def ask_gpt():
             messages=[
                 {"role": "system", "content": system_prompt}
             ] + messages,
-            max_tokens=200,
+            max_tokens=400,
             temperature=0.7
         )
         return jsonify({'value': response['choices'][0]['message']['content'].strip()})
